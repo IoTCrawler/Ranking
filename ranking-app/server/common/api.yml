@@ -1,0 +1,148 @@
+openapi: 3.0.1
+info:
+  title: ranking-app
+  description: IoTCrawler Ranking app
+  version: 1.0.0
+servers:
+- url: /api/v1
+tags:
+- name: IoTCrawler
+  description: Simple example endpoints
+- name: Specification
+  description: The swagger API specification
+paths:
+  /query/location/near:
+    get:
+      tags:
+      - IoTCrawler
+      parameters:
+      - name: location
+        required: true
+        in: query
+        style: deepObject
+        schema:
+          type: object
+          properties:
+            lat:
+              type: number
+              minimum: 0
+              maximum: 180
+            lon:
+              type: number
+              minimum: -90
+              maximum: 90
+      - name: maxDistance
+        required: false
+        in: query
+        schema:
+          type: number
+      - name: sort
+        required: false
+        in: query
+        schema:
+          type: boolean
+      - name: type
+        required: false
+        in: query
+        schema:
+          type: string
+      - $ref: '#/components/parameters/rankWeightsParam'
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:             
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DistanceEntity'
+        400:
+          description: Example not found
+          content: {}
+  /spec:
+    get:
+      tags:
+      - Specification
+      responses:
+        200:
+          description: Return the API specification
+          content: {}
+components:
+  schemas:
+    SimpleEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          example: urn:ngsi-ld:Sensor:demoSensor1
+        type:
+          type: string
+          example: temperature
+        location:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Point
+            coordinates:
+              type: array
+              items:
+                type: number
+              minItems: 2
+              maxItems: 2
+              example: [ 12.7, 54.7 ]
+        completeness: 
+          type: number
+          example: 0.34
+        timeliness: 
+          type: number
+          example: 0.87
+        plausibility: 
+          type: number
+          example: 0.88
+        artificiality: 
+          type: number
+          example: 0.67
+        concordance: 
+          type: number
+          example: 0.79
+        rankScore:
+          type: number
+          example: 0.83
+    DistanceEntity:
+      allOf:
+      - $ref: '#/components/schemas/SimpleEntity'
+      - type: object
+        properties:
+          distance:
+            type: number
+            example: 1232.45
+  parameters:
+    rankWeightsParam:
+      name: rankWeights
+      required: false
+      in: query
+      style: deepObject
+      schema:
+        type: object
+        properties:
+          completeness:
+            type: number
+            minimum: 0
+            maximum: 1
+          timeliness:
+            type: number
+            minimum: 0
+            maximum: 1
+          plausibility:
+            type: number
+            minimum: 0
+            maximum: 1
+          artificiality:
+            type: number
+            minimum: 0
+            maximum: 1
+          concordance:
+            type: number
+            minimum: 0
+            maximum: 1
