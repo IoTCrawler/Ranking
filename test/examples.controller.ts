@@ -3,37 +3,49 @@ import { expect } from 'chai';
 import request from 'supertest';
 import Server from '../server';
 
-describe('Examples', () => {
+// describe('Examples', () => {
+//   it('should get all examples', () =>
+//     request(Server)
+//       .get('/api/v1/examples')
+//       .expect('Content-Type', /json/)
+//       .then(r => {
+//         expect(r.body)
+//           .to.be.an('array')
+//           .of.length(2);
+//       }));
+
+//   it('should add a new example', () =>
+//     request(Server)
+//       .post('/api/v1/examples')
+//       .send({ name: 'test' })
+//       .expect('Content-Type', /json/)
+//       .then(r => {
+//         expect(r.body)
+//           .to.be.an('object')
+//           .that.has.property('name')
+//           .equal('test');
+//       }));
+
+//   it('should get an example by id', () =>
+//     request(Server)
+//       .get('/api/v1/examples/2')
+//       .expect('Content-Type', /json/)
+//       .then(r => {
+//         expect(r.body)
+//           .to.be.an('object')
+//           .that.has.property('name')
+//           .equal('test');
+//       }));
+// });
+
+describe('Ranking', () => {
   it('should get all examples', () =>
     request(Server)
-      .get('/api/v1/examples')
+      .get('/api/v1/query/location/near?location[lat]=0&location[lon]=0&rankWeights[completeness]=0&rankWeights[timeliness]=0&rankWeights[plausibility]=0&rankWeights[artificiality]=0&rankWeights[concordance]=0')
       .expect('Content-Type', /json/)
       .then(r => {
         expect(r.body)
           .to.be.an('array')
           .of.length(2);
-      }));
-
-  it('should add a new example', () =>
-    request(Server)
-      .post('/api/v1/examples')
-      .send({ name: 'test' })
-      .expect('Content-Type', /json/)
-      .then(r => {
-        expect(r.body)
-          .to.be.an('object')
-          .that.has.property('name')
-          .equal('test');
-      }));
-
-  it('should get an example by id', () =>
-    request(Server)
-      .get('/api/v1/examples/2')
-      .expect('Content-Type', /json/)
-      .then(r => {
-        expect(r.body)
-          .to.be.an('object')
-          .that.has.property('name')
-          .equal('test');
       }));
 });

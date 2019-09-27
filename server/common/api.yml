@@ -7,7 +7,7 @@ servers:
 - url: /api/v1
 tags:
 - name: IoTCrawler
-  description: Simple example endpoints
+  description: IoTCrawler endpoints
 - name: Specification
   description: The swagger API specification
 paths:
