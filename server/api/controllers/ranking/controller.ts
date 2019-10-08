@@ -2,20 +2,19 @@ import { RankingService } from '../../services/ranking.service';
 import { Request, Response } from 'express';
 import L from '../../../common/logger';
 
-const s = new RankingService('http://localhost:8083');
-
 function weightedSum(values: object, weights: object): number {
   return Object.keys(weights)
-    .map(key => weights[key]*values[key])
+    .filter(key => values[key]) // For now: ignore if keys are missing from input
+    .map(key => weights[key]*values[key].value)
     .reduce((sum, num) => sum + num, 0);
 }
 
 export class Controller {
-  private readonly rankingService: RankingService;
+  private rankingService: RankingService;
 
-  constructor() {
-    L.info('Constructing controller');
-    this.rankingService = new RankingService('http://localhost:8083');
+  constructor(url: string) {
+    L.debug('Constructing controller', url);
+    this.rankingService = new RankingService(url);
   }
   // // TODO remove
   // all(req: Request, res: Response): void {
@@ -42,10 +41,9 @@ export class Controller {
   // }
 
   public near(req: Request, res: Response): void {
-    let params = JSON.parse(JSON.stringify(req.query)); // deep copy the query parameters
-    delete params['rankWeights']; 
-    L.info(`Controller.near: Calling rankingService.near(${JSON.stringify(params)})`);
-    s.near(params).then(r => res.json(r.map(entity =>  ({ ... entity, rankScore: weightedSum(entity, req.query.rankWeights)}))));
+    
+    L.debug(`Controller.near: Calling rankingService.near(${JSON.stringify(req.query)})`);
+    this.rankingService.rank(req.query, req.headers)
+      .then(r => res.json(r));
   }
 }
-export default new Controller();

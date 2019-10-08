@@ -89,3 +89,12 @@ npm run test:debug
 #### Debug with VSCode
 
 Add these [contents](https://github.com/cdimascio/generator-express-no-stress/blob/next/assets/.vscode/launch.json) to your `.vscode/launch.json` file
+
+## Deploy to Docker
+
+Execute the following command to deploy the app via Docker. Make sure you have set the environment variables for proxies if behind firewall. For <PATH> either use '.' if you have cloned the repo first or use the git clone URL.
+
+```shell
+docker build --build-arg HTTP_PROXY=$http_proxy --build-arg HTTPS_PROXY=$https_proxy --tag=iotcrawler-ranking <PATH>
+docker run -p 3000:3000 iotcrawler-ranking
+```

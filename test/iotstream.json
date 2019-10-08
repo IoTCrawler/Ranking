@@ -1,0 +1,27 @@
+{
+    "id": "iotc:Stream_Z-Wave+Node+003%3A+FGWP102+Meter+Living+Space_Sensor+%28power%29",
+    "type": "iotc:IoTStream",
+    "@context": {
+        "iotc": "http://purl.org/iot/ontology/iot-stream#",
+        "madeBySensor": {
+            "@id": "http://www.w3.org/ns/sosa/madeBySensor",
+            "@type": "@id"
+        },
+        "rdf-schema": "http://www.w3.org/2000/01/rdf-schema#",
+        "sosa": "http://www.w3.org/ns/sosa/",
+        "completeness":  "http://purl.oclc.org/NET/UASO/qoi2#Completeness",
+        "artificiality": "http://purl.oclc.org/NET/UASO/qoi2#Artificiality"
+    },
+    "sosa:madeBySensor": {
+        "type": "Relationship",
+        "object": "iotc:Sensor_Z-Wave+Node+003%3A+FGWP102+Meter+Living+Space_Sensor+%28power%29"
+    },
+    "completeness": {
+        "type": "Property",
+        "value": 0.88
+    },
+    "artificiality": {
+        "type": "Property",
+        "value": 0.92
+    }
+}

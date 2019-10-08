@@ -1,0 +1,25 @@
+{
+    "id": "iotc:Property_Z-Wave+Node+002%3A+FGWP102+Metered+Wall+Plug+Switch_Sensor+%28power%29",
+    "type": "http://www.agtinternational.com/ontologies/devices#Power",
+    "@context": {
+        "isObservedBy": {
+            "@id": "http://www.w3.org/ns/sosa/isObservedBy",
+            "@type": "@id"
+        },
+        "iotc": "http://purl.org/iot/ontology/iot-stream#",
+        "devices": "http://www.agtinternational.com/ontologies/devices#",
+        "label": {
+            "@id": "http://www.w3.org/2000/01/rdf-schema#label"
+        },
+        "rdf-schema": "http://www.w3.org/2000/01/rdf-schema#",
+        "sosa": "http://www.w3.org/ns/sosa/"
+    },
+    "sosa:isObservedBy": {
+        "type": "Relationship",
+        "object": "iotc:Sensor_Z-Wave+Node+002%3A+FGWP102+Metered+Wall+Plug+Switch_Sensor+%28power%29"
+    },
+    "rdf-schema:label": {
+        "type": "Property",
+        "value": "Power"
+    }
+}

@@ -1,50 +1,57 @@
-import Promise from 'bluebird';
+//import Promise from 'bluebird';
 import L from '../../common/logger'
 import { IndexClient } from '../../common/indexClient';
 
-let id = 0;
-interface Example {
-  id: number,
-  name: string
-};
-
-const examples: Example[] = [
-    { id: id++, name: 'example 0' }, 
-    { id: id++, name: 'example 1' }
-];
-
-export class RankingService {
-    private readonly client: IndexClient ;
-
-    constructor(indexUrl: string) {
-        this.client = new IndexClient(indexUrl);
-    }
-//   all(): Promise<Example[]> {
-//     L.info(examples, 'fetch all examples');
-//     return Promise.resolve(examples);
-//   }
-
-//   byId(id: number): Promise<Example> {
-//     L.info(`fetch example with id ${id}`);
-//     return this.all().then(r => r[id])
-//   }
-
-//   create(name: string): Promise<Example> {
-//     L.info(`create example with name ${name}`);
-//     const example: Example = {
-//       id: id++,
-//       name
-//     };
-//     examples.push(example)
-//     return Promise.resolve(example);
-//   }
-
-  near(params: object): Promise<object[]> {
-    L.info('RankingService.near: Calling indexer client');
-    return Promise.resolve(this.client.queryPoint(params));
-  }
-
-
+function weightedSum(values: object, weights: object): number {
+  return Object.keys(weights)
+    .filter(key => values[key]) // For now: ignore if keys are missing from input
+    .map(key => weights[key]*values[key].value)
+    .reduce((sum, num) => sum + num, 0);
 }
 
-export default new RankingService('http://localhost:8083');
+export class RankingService {
+  private readonly client: IndexClient;
+
+  constructor(indexUrl: string) {
+    L.debug('Creating RankingService');
+    this.client = new IndexClient(indexUrl);
+  }
+  //   all(): Promise<Example[]> {
+  //     L.info(examples, 'fetch all examples');
+  //     return Promise.resolve(examples);
+  //   }
+
+  //   byId(id: number): Promise<Example> {
+  //     L.info(`fetch example with id ${id}`);
+  //     return this.all().then(r => r[id])
+  //   }
+
+  //   create(name: string): Promise<Example> {
+  //     L.info(`create example with name ${name}`);
+  //     const example: Example = {
+  //       id: id++,
+  //       name
+  //     };
+  //     examples.push(example)
+  //     return Promise.resolve(example);
+  //   }
+
+  public async rank(params: any, headers: object): Promise<object[]> {
+    L.debug('RankingService.near: Calling indexer client');
+    let p = JSON.parse(JSON.stringify(params)); // deep copy the query parameters
+    delete p['rankWeights'];
+
+    let entities = await this.client.getEntities(p, headers);
+    
+    let newentities = entities.map(
+      entity => ({ 
+        ... entity, 
+        rankScore: { 
+          type: 'Property', 
+          value: weightedSum(entity, params.rankWeights)
+        }
+      })
+    );
+    return newentities;
+  }
+}

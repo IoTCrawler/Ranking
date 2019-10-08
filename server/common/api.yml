@@ -1,125 +1,154 @@
-openapi: 3.0.1
+openapi: 3.0.0
 info:
-  title: ranking-app
-  description: IoTCrawler Ranking app
-  version: 1.0.0
-servers:
-- url: /api/v1
+  description: >-
+    This swagger file describes the NGSI-LD API defined by the ETSI ISG CIM
+    group. This Cross-domain Context Information Management API allows to
+    provide, consume and subscribe to context information in multiple scenarios
+    and involving multiple stakeholders
+  version: "0.0.11-oas3"
+  title: ETSI ISG CIM / NGSI-LD API
+  termsOfService: 'http://tbd.tbd/tbd/'
+  contact:
+    email: NGSI-LD@etsi.org
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+externalDocs:
+  description: Find out more about the ETSI ISG Context Information Management
+  url: 'https://portal.etsi.org/tb.aspx?tbid=854&SubTB=854'
 tags:
-- name: IoTCrawler
-  description: IoTCrawler endpoints
-- name: Specification
-  description: The swagger API specification
+  - name: ETSI
+    description: European Telecommunications Standards Institute
+    externalDocs:
+      description: Find out more
+      url: 'http://www.etsi.org'
+  - name: CIM
+    description: Context Information Management
+    externalDocs:
+      description: Find out more
+      url: 'https://portal.etsi.org/tb.aspx?tbid=854&SubTB=854'
+  - name: OMA
+    description: Open Mobile Alliance
+    externalDocs:
+      description: Find out more
+      url: 'http://openmobilealliance.org'
+  - name: NSGI
+    description: Next Generation Service Interfaces
+    externalDocs:
+      description: Find out more
+      url: >-
+        http://www.openmobilealliance.org/release/NGSI/V1_0-20120529-A/OMA-AD-NGSI-V1_0-20120529-A.pdf
+  - name: FIWARE NSGI v2
+    description: FIWARE Next Generation Service Interfaces v2
+    externalDocs:
+      description: Find out more
+      url: 'https://orioncontextbroker.docs.apiary.io/#'
+  - name: JSON-LD
+    description: JSON for Linking Data
+    externalDocs:
+      description: Find out more
+      url: 'https://json-ld.org/'
+  - name: NGSI-LD API
+    description: API defined by the ETSI ISG CIM
+    externalDocs:
+      description: Find out more
+      url: >-
+        http://www.etsi.org/deliver/etsi_gs/CIM/001_099/004/01.01.01_60/gs_CIM004v010101p.pdf
 paths:
-  /query/location/near:
+  /entities/:
     get:
-      tags:
-      - IoTCrawler
+      description: >-
+        Retrieve a set of entities which matches a specific query from an
+        NGSI-LD system
+      operationId: queryEntities
       parameters:
-      - name: location
-        required: true
-        in: query
-        style: deepObject
-        schema:
-          type: object
-          properties:
-            lat:
-              type: number
-              minimum: 0
-              maximum: 180
-            lon:
-              type: number
-              minimum: -90
-              maximum: 90
-      - name: maxDistance
-        required: false
-        in: query
-        schema:
-          type: number
-      - name: sort
-        required: false
-        in: query
-        schema:
-          type: boolean
-      - name: type
-        required: false
-        in: query
-        schema:
-          type: string
-      - $ref: '#/components/parameters/rankWeightsParam'
+        - name: id
+          description: Comma separated list of URIs to be retrieved
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: type
+          description: Comma separated list of Entity type names to be retrieved
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: idPattern
+          description: Regular expression that must be matched by Entity ids
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: attrs
+          description: >-
+            Comma separated list of attribute names (properties or
+            relationships) to be retrieved
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: q
+          description: Query
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: georel
+          description: Geo-relationship
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: geometry
+          description: Geometry
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: coordinates
+          description: Coordinates serialized as a string
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: geoproperty
+          description: >-
+            The name of the property that contains the geo-spatial data that
+            will be used to resolve the geoquery
+          in: query
+          required: false
+          schema:
+            type: string
+        - $ref: '#/components/parameters/rankWeightsParam'
       responses:
-        200:
-          description: Return the example with the specified id
-          content:             
+        '200':
+          description: OK
+          content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DistanceEntity'
-        400:
-          description: Example not found
-          content: {}
-  /spec:
-    get:
-      tags:
-      - Specification
-      responses:
-        200:
-          description: Return the API specification
-          content: {}
+                $ref: 'ngsild_entity_schema.json#/definitions/EntityList'
+            application/ld+json:
+              schema:
+                $ref: 'ngsild_entity_schema.json#/definitions/EntityList'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: 'ngsild_schema.json#/definitions/ApiErrorResponse'
+            application/ld+json:
+              schema:
+                $ref: 'ngsild_schema.json#/definitions/ApiErrorResponse'
+    
+servers:
+  - url: '/ngsi-ld/v1'
+  
 components:
-  schemas:
-    SimpleEntity:
-      type: object
-      properties:
-        id:
-          type: string
-          example: urn:ngsi-ld:Sensor:demoSensor1
-        type:
-          type: string
-          example: temperature
-        location:
-          type: object
-          properties:
-            type:
-              type: string
-              example: Point
-            coordinates:
-              type: array
-              items:
-                type: number
-              minItems: 2
-              maxItems: 2
-              example: [ 12.7, 54.7 ]
-        completeness: 
-          type: number
-          example: 0.34
-        timeliness: 
-          type: number
-          example: 0.87
-        plausibility: 
-          type: number
-          example: 0.88
-        artificiality: 
-          type: number
-          example: 0.67
-        concordance: 
-          type: number
-          example: 0.79
-        rankScore:
-          type: number
-          example: 0.83
-    DistanceEntity:
-      allOf:
-      - $ref: '#/components/schemas/SimpleEntity'
-      - type: object
-        properties:
-          distance:
-            type: number
-            example: 1232.45
   parameters:
     rankWeightsParam:
       name: rankWeights
+      description: rank weights for properties of entity
       required: false
       in: query
       style: deepObject
