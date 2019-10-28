@@ -10,6 +10,12 @@ Get started developing...
 # install deps
 npm install
 
+# configure app
+cp sample.env .env
+
+# edit .env
+vim .env
+
 # run in development mode
 npm run dev
 
@@ -96,5 +102,5 @@ Execute the following command to deploy the app via Docker. Make sure you have s
 
 ```shell
 docker build --build-arg HTTP_PROXY=$http_proxy --build-arg HTTPS_PROXY=$https_proxy --tag=iotcrawler-ranking <PATH>
-docker run -p 3000:3000 iotcrawler-ranking
+docker run -p 3000:3000 --env-file=sample.env iotcrawler-ranking
 ```
