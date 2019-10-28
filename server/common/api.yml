@@ -55,7 +55,7 @@ tags:
       url: >-
         http://www.etsi.org/deliver/etsi_gs/CIM/001_099/004/01.01.01_60/gs_CIM004v010101p.pdf
 paths:
-  /entities/:
+  /entities:
     get:
       description: >-
         Retrieve a set of entities which matches a specific query from an
