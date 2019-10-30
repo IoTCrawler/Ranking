@@ -12,6 +12,7 @@ cache:
 build:
   stage: build
   script:
+    - docker build .
     - npm install
     - npm run compile
   artifacts:
