@@ -1,19 +1,39 @@
-FROM node:12-alpine
+# Build container
+FROM node:lts-alpine as builder
 
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY . /usr/src/app
+## Install build dependencies
+COPY package*.json ./
+RUN npm ci --quiet
 
-# build javscript
-RUN npm clean-install
+## Copy source
+COPY ./server server
+COPY tsconfig.json .
+COPY build.ts .
+
+## Build
 RUN npm run compile
 
-# delete dev dependencies
-# switch to production mode
+
+# Runtime container
+FROM node:lts-alpine
+
+WORKDIR /app
+
+## Install runtime dependencies
+COPY package*.json ./
+
+## Switch to production environment
 ENV NODE_ENV=production
-RUN npm prune
+
+## Install runtime dependencies
+RUN npm ci --quiet
+
+## Copy build output from previous stage
+COPY --from=builder /usr/src/app/dist dist
 
 EXPOSE 3000
 
+## Start the App
 CMD [ "npm", "start" ]
