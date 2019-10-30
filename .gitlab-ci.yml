@@ -16,8 +16,8 @@ build:
   stage: build
   script:
     - ls -la
-    - docker run -v ${PWD}:. node npm install
-    - docker run -v ${PWD}:. node npm run compile
+    - docker run -v ${PWD}:/usr/src/app -w /usr/src/app node npm install
+    - docker run -v ${PWD}:/usr/src/app -w /usr/src/app node npm run compile
   artifacts:
     paths:
       - node_modules/
