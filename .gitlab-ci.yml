@@ -15,6 +15,7 @@ before_script:
 build:
   stage: build
   script:
+    - ls -la
     - docker run node npm install
     - docker run node npm run compile
   artifacts:
