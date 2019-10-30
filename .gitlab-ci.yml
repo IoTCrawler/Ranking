@@ -9,6 +9,7 @@ build:
   stage: build
   script:
     - docker build --tag $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:${CI_COMMIT_TAG:-latest} .
+    - rm -rf dist
 
 deploy_push_docker:
   stage: deploy
