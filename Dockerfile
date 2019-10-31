@@ -1,5 +1,5 @@
 # Build container
-FROM node:lts-alpine AS builder
+FROM node:lts-alpine
 
 WORKDIR /usr/src/app
 
@@ -31,7 +31,7 @@ ENV NODE_ENV=production
 RUN npm ci --quiet
 
 ## Copy build output from previous stage
-COPY --from=builder /usr/src/app/dist dist
+COPY --from=0 /usr/src/app/dist dist
 
 EXPOSE 3000
 
