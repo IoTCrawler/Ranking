@@ -1,5 +1,5 @@
 # Build container
-FROM node:lts-alpine as builder
+FROM node:lts-alpine AS builder
 
 WORKDIR /usr/src/app
 
