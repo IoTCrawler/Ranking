@@ -3,10 +3,16 @@ FROM node:lts-alpine
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+# copy project definitions
+COPY package*.json ./
+
+# install dependencies
+RUN npm clean-install
+
+# copy app
 COPY . /usr/src/app
 
-# build javscript
-RUN npm clean-install
+# compile app
 RUN npm run compile
 
 # delete dev dependencies
@@ -16,4 +22,4 @@ RUN npm prune
 
 EXPOSE 3003
 
-CMD [ "npm", "start" ]
+CMD [ "node", "dist/index.js" ]
