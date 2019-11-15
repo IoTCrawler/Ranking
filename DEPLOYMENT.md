@@ -37,9 +37,9 @@ Via the same mechanism it's possible to configure `LOG_LEVEL` and `PORT` besides
 
 ### Port
 
-By default the app binds to port 3003. To forward the port of the container to the host either use the `-P` option or define a custom port mapping, e.g., `-p 3003:3003`.
+By default the app binds to port 3003 (this might change in the future). To forward the port of the container to the host either use the `-P` option or define a custom port mapping, e.g., `-p 3003:3003`.
 
-Alternatively use the `--link` parameter. Some details here: https://docs.docker.com/engine/reference/run/#expose-incoming-ports.
+Some details here: https://docs.docker.com/engine/reference/run/#expose-incoming-ports.
 
 ### General
 
@@ -56,5 +56,7 @@ If memory should be constrained use these parameters (with example values):
 ### Complete example
 
 ```shell
-docker run --memory "300M" --memory-swap "1G" --name "rail-kg-backend1" --init --detach -e INDEXER_URL=http://localhost:3002 -p 3003:3003 gitlab.iotcrawler.net:4567/ranking/ranking
+docker run --memory "300M" --memory-swap "1G" --name "ranking" --init --detach -e INDEXER_URL=http://localhost:3002 -P gitlab.iotcrawler.net:4567/ranking/ranking
 ```
+
+Look at the output of `docker port ranking` to find out at which port the app is responding.
