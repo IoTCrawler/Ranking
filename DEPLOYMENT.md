@@ -49,7 +49,7 @@ Some details here: https://docs.docker.com/engine/reference/run/#expose-incoming
 
 ### General
 
-Use `--name` and `--detach` as needed. The `--init` is not strictly necessary.
+Use `--name` and `--detach` as needed.
 
 ### Memory (optional)
 
@@ -62,7 +62,7 @@ If memory should be constrained use these parameters (with example values):
 ### Complete example
 
 ```shell
-docker run --memory "300M" --memory-swap "1G" --name "ranking" --init --detach --env INDEXER_URL=http://localhost:3002 --publish-all gitlab.iotcrawler.net:4567/ranking/ranking
+docker run --memory "300M" --memory-swap "1G" --name "ranking" --detach --env INDEXER_URL=http://localhost:3002 --publish-all gitlab.iotcrawler.net:4567/ranking/ranking
 ```
 
 You can then use the hostname `ranking` to connect from other docker containers to the ranking component.
