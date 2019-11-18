@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+
+  djane:
+    image: gitlab.iotcrawler.net:4567/core/djane:1.0.0
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    networks:
+      - iotcrawler
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    volumes:
+      - ./data/db:/data/db
+    # ports:
+    #   - "27017:27017"
+    networks:
+      - iotcrawler
+      
+  ranking:
+    #docker run --memory "300M" --memory-swap "1G" --name "ranking"
+    # image: gitlab.iotcrawler.net:4567/ranking/ranking
+    restart: unless-stopped
+    build: 
+      context: .
+      args:
+        - http_proxy
+        - https_proxy
+    environment:
+      - INDEXER_URL=http://djane:3000
+    ports:
+      - "3003:3003"
+    depends_on:
+      - djane
+    networks:
+      - iotcrawler
+
+networks:
+  iotcrawler:
