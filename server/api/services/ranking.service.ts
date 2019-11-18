@@ -43,15 +43,17 @@ export class RankingService {
 
     let entities = await this.client.getEntities(p, headers);
     
-    let newentities = entities.map(
-      entity => ({ 
-        ... entity, 
-        rankScore: { 
-          type: 'Property', 
-          value: weightedSum(entity, params.rankWeights)
-        }
-      })
-    );
+    let newentities = typeof params.rankWeights === 'undefined' ? 
+      entities : // if no rankWeights are defined, return entities unchanged
+      entities.map(
+        entity => ({ 
+          ... entity, 
+          rankScore: { 
+            type: 'Property', 
+            value: weightedSum(entity, params.rankWeights)
+          }
+        })
+      );
     return newentities;
   }
 }
