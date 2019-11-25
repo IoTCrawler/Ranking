@@ -30,6 +30,9 @@ test:
     - docker-compose version
     - docker-compose up -d
     - sleep 10
-    - curl http://localhost:3003/ngsi-ld/v1/entities?type=iotc:iot-stream
+    - curl http://localhost:3003/ngsi-ld/v1/entities?type=iotc:iot-stream 
+    - curl http://localhost:3003/ngsi-ld/v1/entities?type=iotc:iot-stream > test.json
+    - cat test.json
+    - rm test.json
     - docker-compose down
     - docker-compose rm --stop --force
