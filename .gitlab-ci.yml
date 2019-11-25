@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
 
 before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -7,5 +8,26 @@ before_script:
 build:
   stage: build
   script:
-    - docker build --tag $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:${CI_COMMIT_TAG:-latest} .
-    - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:${CI_COMMIT_TAG:-latest}
+    # - docker build --tag $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:${CI_COMMIT_TAG:-latest} .
+    - docker build --tag $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest .
+    - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
+
+build:
+  stage: build
+  script:
+    # - docker build --tag $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:${CI_COMMIT_TAG:-latest} .
+    - docker build --tag $CI_REGISTRY_IMAGE:CI_COMMIT_TAG .
+    - docker push $CI_REGISTRY_IMAGE:CI_COMMIT_TAG
+  only:
+    - tags
+
+test:
+  stage: test
+  script:
+    - docker-compose version
+    - docker-compose up -d
+    - sleep 10
+    - curl http://localhost:3003/ngsi-ld/v1/entities?type=iotc:iot-stream
+    - docker-compose down
+    - docker-compose rm --stop --force

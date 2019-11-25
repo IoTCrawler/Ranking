@@ -1,4 +1,4 @@
-version: '3.7'
+version: '2.0'
 services:
 
   djane:
@@ -14,8 +14,8 @@ services:
   mongo:
     image: mongo
     restart: unless-stopped
-    volumes:
-      - ./data/db:/data/db
+    # volumes:
+    #   - ./data/db:/data/db
     # ports:
     #   - "27017:27017"
     networks:
@@ -23,13 +23,13 @@ services:
       
   ranking:
     #docker run --memory "300M" --memory-swap "1G" --name "ranking"
-    # image: gitlab.iotcrawler.net:4567/ranking/ranking
+    image: gitlab.iotcrawler.net:4567/ranking/ranking/master:latest
+    # build: 
+    #   context: .
+    #   args:
+    #     - http_proxy
+    #     - https_proxy
     restart: unless-stopped
-    build: 
-      context: .
-      args:
-        - http_proxy
-        - https_proxy
     environment:
       - INDEXER_URL=http://djane:3000
     ports:
