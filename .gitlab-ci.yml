@@ -29,6 +29,7 @@ test:
   before_script:
     - docker-compose down
     - docker-compose up -d
+    - sleep 5
   script:
     - curl http://localhost:3003/ngsi-ld/v1/entities?type=iotc:iot-stream > test.json
     - cat test.json
