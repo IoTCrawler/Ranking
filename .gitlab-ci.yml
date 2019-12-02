@@ -35,4 +35,3 @@ test:
   after_script:
     - rm test.json
     - docker-compose down
-    - docker-compose rm --stop --force

@@ -32,8 +32,8 @@ services:
     restart: unless-stopped
     environment:
       - INDEXER_URL=http://djane:3000
-    # ports:
-    #   - "3003"
+    ports:
+      - "3003:3003"
     depends_on:
       - djane
     networks:
