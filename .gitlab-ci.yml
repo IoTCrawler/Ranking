@@ -26,13 +26,13 @@ build-tags:
 
 test:
   stage: test
-  script:
-    - docker-compose version
+  before_script:
+    - docker-compose down
     - docker-compose up -d
-    - sleep 10
-    - curl http://localhost:3003/ngsi-ld/v1/entities?type=iotc:iot-stream 
+    - sleep 5
+  script:
     - curl http://localhost:3003/ngsi-ld/v1/entities?type=iotc:iot-stream > test.json
     - cat test.json
+  after_script:
     - rm test.json
     - docker-compose down
-    - docker-compose rm --stop --force
