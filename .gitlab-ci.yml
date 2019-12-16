@@ -34,5 +34,5 @@ test:
     - curl http://localhost:3003/ngsi-ld/v1/entities?type=iotc:iot-stream > test.json
     - cat test.json
   after_script:
-    - rm test.json
+    - rm --force test.json
     - docker-compose down
