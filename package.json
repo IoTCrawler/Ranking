@@ -26,6 +26,7 @@
     "express-openapi-validator": "^2.15.0",
     "express-status-monitor": "^1.2.7",
     "http-status-codes": "^1.4.0",
+    "jsonpath": "^1.0.2",
     "pino": "^5.13.6"
   },
   "devDependencies": {
