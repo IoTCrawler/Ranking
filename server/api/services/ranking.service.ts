@@ -9,6 +9,40 @@ function weightedSum(values: object, weights: object): number {
     .reduce((sum, num) => sum + num, 0);
 }
 
+/**
+ * Navigate with attribute path
+ * Don't use this directly, use navigatePathToObject or navigatePathToValue instead
+ * @param objectlist list of NGSI-LD entities
+ * @param {string} path attribute path
+ * @returns {[object]} list of mappings {from,to}
+ */
+function navigatePath(objectlist, path: string): [object] {
+  return jp.nodes(objectlist, `$[*].${path}`).map(node => {
+    return {
+      from: objectlist[node.path[1]].id, // x.path[1] is the index of the matched entity
+      to: node.value
+    };
+  });
+}
+
+/**
+ * Navigate with attribute path to relationship objects
+ * @param objectlist list of NGSI-LD entities
+ * @param path attribute path ending with relationship
+ */
+export function navigatePathToObject(objectlist, path: string): [object] {
+  return navigatePath(objectlist, path + ".object");
+}
+
+/**
+ * Navigate via attribute path to property value
+ * @param objectlist list of NGSI-LD entities
+ * @param path attribute path ending with property
+ */
+export function navigatePathToValue(objectlist, path: string): [object] {
+  return navigatePath(objectlist, path + ".value");
+}
+
 export class RankingService {
   private readonly client: IndexClient;
 
