@@ -1,6 +1,7 @@
 //import Promise from 'bluebird';
 import L from '../../common/logger'
 import { IndexClient } from '../../common/indexClient';
+import jp from 'jsonpath';
 
 function weightedSum(values: object, weights: object): number {
   return Object.keys(weights)
