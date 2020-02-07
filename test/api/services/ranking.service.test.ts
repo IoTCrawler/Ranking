@@ -100,7 +100,7 @@ const parking = [
   }
 ];
 
-describe("navigatePathToValue", () => {
+describe("navigatePathToObject", () => {
   it("matches path", () => {
     const result = navigatePathToObject(
       parking,
