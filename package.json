@@ -1,6 +1,6 @@
 {
   "name": "ranking-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "IoTCrawler Ranking app",
   "author": "Stefan Bischof",
   "main": "index.js",
