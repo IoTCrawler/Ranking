@@ -2,8 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 service:
-  externalPort: 6000
-  internalPort: 6000
+  externalPort: 3003
+  internalPort: 3003
+  
 livenessProbe:
   path: "/"
   initialDelaySeconds: 14
