@@ -4,7 +4,7 @@
 service:
   externalPort: 3003
   internalPort: 3003
-
+  
 livenessProbe:
   path: "/"
   initialDelaySeconds: 14
