@@ -83,7 +83,7 @@ export class RankingService {
       entities.map(
         entity => ({ 
           ... entity, 
-          rankScore: { 
+          'http://iotcrawler.eu/rankScore': { 
             type: 'Property', 
             value: weightedSum(entity, params.rankWeights)
           }
