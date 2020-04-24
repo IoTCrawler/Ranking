@@ -19,15 +19,35 @@ export class IndexClient {
     
     public async getEntities(params: object, headers: object): Promise<object[]> {
         L.debug(`Calling Indexer params: ${JSON.stringify(params)} headers: ${JSON.stringify(headers)}`);
-        const result = await this.client.get<object[]>(`/ngsi-ld/v1/entities`, {
-            params: params,
-            headers: headers
-        });
-
-        if (result.status !== OK) {
-            throw new Error('Failed to retrieve points');
+        try {
+            const result = await this.client.get<object[]>(`/ngsi-ld/v1/entities`, {
+                params: params,
+                headers: headers
+            });
+            return result.data;
+        } catch (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                L.error("E1" + error.response.data);
+                L.error(error.response.status);
+                L.error(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                L.error("E2" + error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                L.error('E3', error.message);
+            }
+            L.error("E4" + error.config);
         }
 
-        return result.data;
+        // if (result.status !== OK) {
+        //     
+        // }
+
+        
     }
 }
