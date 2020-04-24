@@ -3,6 +3,15 @@ import Server from './common/server';
 import routes from './routes';
 
 const port = parseInt(process.env.PORT || "3003");
-export default new Server()
-  .router(routes)
-  .listen(port);
+const server = new Server()
+server.router(routes);
+const app = server.listen(port);
+export default app;
+
+function startGracefulShutdown() {
+  console.log('Starting shutdown of express ...');
+  server.close();
+}
+
+process.on('SIGTERM', startGracefulShutdown);
+process.on('SIGINT', startGracefulShutdown);

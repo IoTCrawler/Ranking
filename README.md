@@ -98,9 +98,9 @@ Add these [contents](https://github.com/cdimascio/generator-express-no-stress/bl
 
 ## Deploy to Docker
 
-Execute the following command to deploy the app via Docker. Make sure you have set the environment variables for proxies if behind firewall. For <PATH> either use '.' if you have cloned the repo first or use the git clone URL.
+Execute the following command to deploy the app via Docker. Configure sample.env accordingly.
 
 ```shell
-docker build --build-arg HTTP_PROXY=$http_proxy --build-arg HTTPS_PROXY=$https_proxy --tag=iotcrawler-ranking <PATH>
-docker run -p 3000:3000 --env-file=sample.env iotcrawler-ranking
+docker build --tag=iotcrawler-ranking .
+docker run -p 3003:3003 --env-file=sample.env iotcrawler-ranking
 ```
