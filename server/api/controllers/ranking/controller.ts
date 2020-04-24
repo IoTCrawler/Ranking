@@ -44,6 +44,6 @@ export class Controller {
     
     L.debug(`Controller.near: Calling rankingService.near(${JSON.stringify(req.query)})`);
     this.rankingService.rank(req.query, req.headers)
-      .then(r => res.json(r));
+      .then(r => res.status(200).json(r));
   }
 }
