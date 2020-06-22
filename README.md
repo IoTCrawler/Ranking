@@ -1,9 +1,17 @@
 # IoTCrawler Ranking
 
-IoTCrawler Ranking app
+The Ranking component facilitates ranking mechanism for IoT resources. Ranking and resource selection rely on the registry built (and constantly updated) by crawling and indexing methods. The purpose of Ranking is to aid users and applications to not only find a set of resources relevant to their needs, but also to select the best or most appropriate one(s) from that set. There are multiple criteria for ranking IoT resources such as data type, proximity, latency, availability. The Ranking component supports application-dependent, multi-criteria ranking.
 
 * [Introduction](#introduction)
 * [Getting Started](#getting-started)
+  * [Quick Start](#quick-start)
+  * [Prerequisites](#prerequisites)
+  * [Run It](#run-it)
+  * [Test It](#test-it)
+  * [Try It](#try-it)
+  * [Run It](#run-it)
+  * [Debug It](#debug-it)
+* [Deploy to Docker](#deploy-to-docker)
 * [Release](#release)
 * [Contributing](#contributing)
 * [Testing](#testing)
