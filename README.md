@@ -1,8 +1,21 @@
-# ranking-app
+# IoTCrawler Ranking
 
 IoTCrawler Ranking app
 
-## Quick Start
+* [Introduction](#introduction)
+* [Getting Started](#getting-started)
+* [Release](#release)
+* [Contributing](#contributing)
+* [Testing](#testing)
+* [License](#license)
+
+## Introduction
+
+
+
+## Getting Started
+
+### Quick Start
 
 Get started developing...
 
@@ -25,7 +38,7 @@ npm run test
 
 ---
 
-## Install Dependencies
+### Prerequisites
 
 Install all package dependencies (one time operation)
 
@@ -33,7 +46,7 @@ Install all package dependencies (one time operation)
 npm install
 ```
 
-## Run It
+### Run It
 #### Run in *development* mode:
 Runs the application is development mode. Should not be used in production
 
@@ -56,7 +69,7 @@ npm run compile
 npm start
 ```
 
-## Test It
+### Test It
 
 Run the Mocha unit tests
 
@@ -70,7 +83,7 @@ or debug them
 npm run test:debug
 ```
 
-## Try It
+### Try It
 * Open you're browser to [http://localhost:3000](http://localhost:3000)
 * Invoke the `/examples` endpoint 
   ```shell
@@ -78,7 +91,7 @@ npm run test:debug
   ```
 
 
-## Debug It
+### Debug It
 
 #### Debug the server:
 
@@ -105,6 +118,18 @@ docker build --tag=iotcrawler-ranking .
 docker run -p 3003:3003 --env-file=sample.env iotcrawler-ranking
 ```
 
-# License
+## Release
 
-Indexing Project source code files are made available under the Apache License, Version 2.0 (Apache-2.0), located in the LICENSE file.
+Binary and source releases are provided on our [Releases](https://github.com/IoTCrawler/express-hello/releases) page.
+
+## Contributing
+
+We welcome contributions to the Hello-world project in many forms. We are busy creating the documentation.
+
+## Testing
+
+We are busy creating the documentation.
+
+## License
+
+The project source code files are made available under the Apache License, Version 2.0 (Apache-2.0), located in the [LICENSE](LICENSE) file.
