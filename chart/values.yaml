@@ -8,7 +8,7 @@ deploymentApiVersion: apps/v1
 ranking:
   name: ranking
   image:
-    repository: gitlab.iotcrawler.net:4567/ranking/ranking
+    repository: gitlab.iotcrawler.net:4567/ranking/ranking/master
     tag: latest
     pullPolicy: IfNotPresent
     secrets:
