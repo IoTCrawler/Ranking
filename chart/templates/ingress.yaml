@@ -12,7 +12,7 @@ metadata:
     kubernetes.io/tls-acme: "true"
   name: {{ .Values.ranking.service.name }}
 spec:
-tls:
+  tls:
   - hosts:
     {{ if eq .Values.gitlab.env "staging" }}
     - staging.ranking.iotcrawler.eu
