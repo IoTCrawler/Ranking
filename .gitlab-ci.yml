@@ -76,6 +76,9 @@ stages:
 
 workflow:
   rules:
+    - if: '$CI_COMMIT_BRANCH != "master"'
+      when: never
+
     - if: '$BUILDPACK_URL || $AUTO_DEVOPS_EXPLICITLY_ENABLED == "1"'
 
     - exists:
