@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app: {{ template "appname" . }}
+    track: "{{ .Values.application.track }}"
+    tier: "{{ .Values.application.tier }}"
+    release: {{ .Release.Name }}
+    service: {{ .Values.ranking.service.name }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  name: {{ .Values.ranking.service.name }}
+spec:
+  tls:
+  - hosts:
+    {{ if eq .Values.gitlab.env "staging" }}
+    - staging.ranking.iotcrawler.eu
+    {{ else }}
+    - ranking.iotcrawler.eu
+    {{ end }}
+    secretName: ranking-{{ .Values.gitlab.env }}-tls
+  rules:
+  {{ if eq .Values.gitlab.env "staging" }}
+  - host: staging.ranking.iotcrawler.eu
+    {{ else }}
+  - host: ranking.iotcrawler.eu
+  {{ end }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Values.ranking.service.name }}
+          servicePort: {{ .Values.ranking.service.internalPort }}
