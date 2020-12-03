@@ -220,7 +220,7 @@ Eventually the result of the query would look like this:
             "type": "Property",
             "value": 0.92
         },
-        "rankScore": {
+        "http://iotcrawler.eu/rankScore": {
             "type": "Property",
             "value": 0.9040000000000001
         }
