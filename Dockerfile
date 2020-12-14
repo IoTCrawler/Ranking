@@ -35,4 +35,6 @@ COPY --from=builder /usr/src/app/dist dist
 
 EXPOSE 3003
 
+HEALTHCHECK CMD wget -O - localhost:3003/api/health
+
 CMD [ "node", "dist/index.js" ]

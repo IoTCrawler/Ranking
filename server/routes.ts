@@ -20,5 +20,10 @@
 import { Application } from 'express';
 import rankingRouter from './api/controllers/ranking/router';
 export default function routes(app: Application): void {
-  app.use('/ngsi-ld/v1', rankingRouter);
+  app.use("/ngsi-ld/v1", rankingRouter);
+  // api health
+  app.use("/api/health", (_, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify({ status: `UP` }, null, 3));
+  });
 };
