@@ -60,6 +60,11 @@ spec:
             name: {{ .Values.application.secretName }}
         {{- end }}
         env:
+        - name: INDEXER_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{.Release.Name}}-secret
+              key: INDEXER_URL
         volumeMounts:
         ports:
         - name: "{{ .Values.ranking.service.name }}"
