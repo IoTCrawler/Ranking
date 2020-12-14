@@ -2,6 +2,7 @@
   "name": "ranking-app",
   "version": "1.0.1",
   "description": "IoTCrawler Ranking app",
+  "license": "Apache-2.0",
   "author": "Stefan Bischof",
   "main": "index.js",
   "scripts": {
