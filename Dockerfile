@@ -1,24 +1,37 @@
-FROM node:14-alpine
+# Build container
+FROM node:14-alpine as builder
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# copy project definitions
+## Install build dependencies
 COPY package*.json ./
-
-# install dependencies
 RUN npm clean-install
 
-# copy app
+## Copy source
 COPY . /usr/src/app
+COPY tsconfig.json .
+COPY build.ts .
 
-# compile app
+## Build
 RUN npm run compile
 
-# delete dev dependencies
-# switch to production mode
+# Runtime container
+FROM node:14-alpine
+
+WORKDIR /app
+
+## Install runtime dependencies
+COPY package*.json ./
+
+## Switch to production environment
 ENV NODE_ENV=production
-RUN npm prune
+
+## Install runtime dependencies
+RUN npm clean-install
+
+## Copy build output from previous stage
+COPY --from=builder /usr/src/app/dist dist
 
 EXPOSE 3003
 
