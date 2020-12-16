@@ -35,7 +35,6 @@ export default class ExpressServer {
   server: http.Server;
   
   constructor() {
-    app.use(require("express-status-monitor")());
     const root = path.normalize(__dirname + '/../..');
     app.set('appPath', root + 'client');
     app.use(bodyParser.json({ limit: process.env.REQUEST_LIMIT || '100kb' }));
