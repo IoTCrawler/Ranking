@@ -46,7 +46,11 @@ export class Controller {
     this.rankingService
       .rank(req.query, req.headers)
       .then((r) => res.status(StatusCodes.OK).json(r))
-      .catch((error) => {
+      .catch(this.handleError(res));
+  }
+
+  private handleError(res: Response<any>): (reason: any) => void | PromiseLike<void> {
+    return (error) => {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
@@ -54,13 +58,14 @@ export class Controller {
             `Forwarding request to the broker returned an error: ${error.response.status}`
           );
           // Forward response from broker
-          res.status(error.response.status).send(error.response.data);
           for (const header in error.response.headers) {
             if (header === "transfer-encoding") {
               continue;
             }
             res.setHeader(header, error.response.headers[header]);
           }
+
+        res.status(error.response.status).send(error.response.data);
         } else if (error.request) {
           // The request was made but no response was received
           // `error.request` is an instance of http.ClientRequest
@@ -80,6 +85,6 @@ export class Controller {
             detail: "Error during setup of request to broker",
           });
         }
-      });
+    };
   }
 }
