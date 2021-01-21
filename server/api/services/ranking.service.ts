@@ -70,30 +70,18 @@ export class RankingService {
     L.debug('Creating RankingService');
     this.client = new IndexClient(indexUrl);
   }
-  //   all(): Promise<Example[]> {
-  //     L.info(examples, 'fetch all examples');
-  //     return Promise.resolve(examples);
-  //   }
 
-  //   byId(id: number): Promise<Example> {
-  //     L.info(`fetch example with id ${id}`);
-  //     return this.all().then(r => r[id])
-  //   }
+  public async byId(id: string, params: any, headers: object): Promise<object[]> {
+    L.debug(`RankingService.byId: Calling indexer client with id ${id}`);
 
-  //   create(name: string): Promise<Example> {
-  //     L.info(`create example with name ${name}`);
-  //     const example: Example = {
-  //       id: id++,
-  //       name
-  //     };
-  //     examples.push(example)
-  //     return Promise.resolve(example);
-  //   }
+    let entity = await this.client.getEntity(id, params, headers);
+    return entity;
+  }
 
   public async rank(params: any, headers: object): Promise<object[]> {
     L.debug('RankingService.near: Calling indexer client');
     let p = JSON.parse(JSON.stringify(params)); // deep copy the query parameters
-    delete p['rankWeights'];
+    delete p["rankWeights"];
 
     let entities = await this.client.getEntities(p, headers);
     

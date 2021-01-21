@@ -38,6 +38,23 @@ export class IndexClient {
     });
   }
 
+  public async getEntity(id: string, params: any, headers: object) {
+    L.debug(
+      `Calling Broker (id=${id}) params: ${JSON.stringify(
+        params
+      )} headers: ${JSON.stringify(headers)}`
+    );
+    const result = await this.client.get<object[]>(
+      `/ngsi-ld/v1/entities/${id}`,
+      {
+        params: params,
+        headers: headers,
+      }
+    );
+
+    return result.data;
+  }
+
   public async getEntities(params: object, headers: object): Promise<object[]> {
     L.debug(
       `Calling Broker params: ${JSON.stringify(
@@ -48,10 +65,6 @@ export class IndexClient {
       params: params,
       headers: headers,
     });
-
-    // if (result.status !== OK) {
-    //  Promise.reject()
-    // }
 
     return result.data;
   }

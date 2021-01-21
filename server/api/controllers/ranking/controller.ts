@@ -37,6 +37,20 @@ export class Controller {
     this.rankingService = new RankingService(url);
   }
 
+  byId(req: Request, res: Response): void {
+    L.debug(
+      `Controller.byId: Calling rankingService.byId(${JSON.stringify(
+        req.query
+      )})`
+    );
+    const id = req.params['id'];
+
+    this.rankingService
+      .byId(id, req.query, req.headers)
+      .then((r) => res.status(StatusCodes.OK).json(r))
+      .catch(this.handleError(res));
+  }
+
   public near(req: Request, res: Response): void {
     L.debug(
       `Controller.near: Calling rankingService.near(${JSON.stringify(
@@ -51,40 +65,40 @@ export class Controller {
 
   private handleError(res: Response<any>): (reason: any) => void | PromiseLike<void> {
     return (error) => {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          L.error(
-            `Forwarding request to the broker returned an error: ${error.response.status}`
-          );
-          // Forward response from broker
-          for (const header in error.response.headers) {
-            if (header === "transfer-encoding") {
-              continue;
-            }
-            res.setHeader(header, error.response.headers[header]);
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        L.error(
+          `Forwarding request to the broker returned an error: ${error.response.status}`
+        );
+        // Forward response from broker
+        for (const header in error.response.headers) {
+          if (header === "transfer-encoding") {
+            continue;
           }
+          res.setHeader(header, error.response.headers[header]);
+        }
 
         res.status(error.response.status).send(error.response.data);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of http.ClientRequest
-          L.error("Timeout: no response received from the broker");
-          res.status(StatusCodes.GATEWAY_TIMEOUT);
-          res.json({
-            type: "https://uri.etsi.org/ngsi-ld/errors/InternalError",
-            title: "Timeout",
-            detail: "No response received from the broker",
-          });
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          L.error("Request failed: Error during setup of request to broker");
-          res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            type: "https://uri.etsi.org/ngsi-ld/errors/InternalError",
-            title: "Request failed",
-            detail: "Error during setup of request to broker",
-          });
-        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of http.ClientRequest
+        L.error("Timeout: no response received from the broker");
+        res.status(StatusCodes.GATEWAY_TIMEOUT);
+        res.json({
+          type: "https://uri.etsi.org/ngsi-ld/errors/InternalError",
+          title: "Timeout",
+          detail: "No response received from the broker",
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        L.error("Request failed: Error during setup of request to broker");
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          type: "https://uri.etsi.org/ngsi-ld/errors/InternalError",
+          title: "Request failed",
+          detail: "Error during setup of request to broker",
+        });
+      }
     };
   }
 }
